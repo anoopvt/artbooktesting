@@ -3,10 +3,8 @@ package com.anoopvt.artbooktesting.view
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
 import com.anoopvt.artbooktesting.R
@@ -36,6 +34,9 @@ class ArtDetailsFragmentTest {
     lateinit var fragmentFactory: ArtFragmentFactory
 
 
+
+
+
     @Before
     fun setup() {
         hiltRule.inject()
@@ -46,6 +47,8 @@ class ArtDetailsFragmentTest {
 
 
         val navController = Mockito.mock(NavController::class.java)
+        val testViewModel = ArtViewModel(FakeArtRepositoryTest(),null)
+
 
         launchFragmentInHiltContainer<ArtDetailsFragment>(factory = fragmentFactory){
             Navigation.setViewNavController(requireView(), navController)
@@ -78,7 +81,6 @@ class ArtDetailsFragmentTest {
 
         launchFragmentInHiltContainer<ArtDetailsFragment>(factory = fragmentFactory){
             Navigation.setViewNavController(requireView(), navController)
-            
         }
 
         Espresso.onView(withId(R.id.nameText)).perform(replaceText("anoop"),)
