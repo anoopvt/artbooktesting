@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,7 @@ import javax.inject.Inject
  class ImageApiFragment  constructor(private val imageRecyclerAdapter: ImageRecyclerAdapter) :
     Fragment(R.layout.fragment_image_api) {
 
-    val viewModel: ArtViewModel by hiltNavGraphViewModels(R.id.nav_graph)
+     val viewModel: ArtViewModel by activityViewModels()
 
 
     private var fragmentBinding: FragmentImageApiBinding? = null

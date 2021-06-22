@@ -3,6 +3,7 @@ package com.anoopvt.artbooktesting.view
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Observer
@@ -17,14 +18,14 @@ import com.anoopvt.artbooktesting.databinding.FragmentArtsBinding
 import com.anoopvt.artbooktesting.viewmodel.ArtViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
+@AndroidEntryPoint
 class ArtFragment  constructor(
     val artRecyclerAdapter: ArtRecyclerAdapter
 ) : Fragment(R.layout.fragment_arts) {
 
 
     private var fragmentBinding: FragmentArtsBinding? = null
-    val viewModel: ArtViewModel by hiltNavGraphViewModels(R.id.nav_graph)
+    val viewModel: ArtViewModel by activityViewModels()
 
 
     private val swipeCallBack =

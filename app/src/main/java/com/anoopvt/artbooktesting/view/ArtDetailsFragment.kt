@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +24,7 @@ public class ArtDetailsFragment constructor(
 
     private var fragmentBinding: FragmentArtDetailsBinding? = null
 
-    val viewModel: ArtViewModel by hiltNavGraphViewModels(R.id.nav_graph)
+    val viewModel: ArtViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,10 +43,10 @@ public class ArtDetailsFragment constructor(
 
         val calBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().popBackStack()
+                findNavController().navigateUp()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(calBack)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,calBack)
 
 
         binding.saveButton.setOnClickListener {

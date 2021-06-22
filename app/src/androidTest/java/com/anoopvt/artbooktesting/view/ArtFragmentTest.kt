@@ -1,13 +1,8 @@
 package com.anoopvt.artbooktesting.view
 
-import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.ViewModelStore
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.testing.TestNavHostController
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.filters.MediumTest
@@ -36,7 +31,6 @@ class ArtFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
-
 
     }
 
