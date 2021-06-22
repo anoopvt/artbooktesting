@@ -23,7 +23,7 @@ public class ArtDetailsFragment constructor(
 
     private var fragmentBinding: FragmentArtDetailsBinding? = null
 
-    val viewModel: ArtViewModel by viewModels()
+    val viewModel: ArtViewModel by hiltNavGraphViewModels(R.id.nav_graph)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
