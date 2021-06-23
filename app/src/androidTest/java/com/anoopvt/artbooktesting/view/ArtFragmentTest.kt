@@ -45,6 +45,7 @@ class ArtFragmentTest {
 
         Espresso.onView(ViewMatchers.withId(R.id.fab)).perform(ViewActions.click())
 
+
         Mockito.verify(navController)
             .navigate(ArtFragmentDirections.actionArtFragmentToArtDetailsFragment())
 

@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
- class ImageApiFragment  constructor(private val imageRecyclerAdapter: ImageRecyclerAdapter) :
+ class ImageApiFragment  constructor(val imageRecyclerAdapter: ImageRecyclerAdapter) :
     Fragment(R.layout.fragment_image_api) {
 
      val viewModel: ArtViewModel by activityViewModels()
