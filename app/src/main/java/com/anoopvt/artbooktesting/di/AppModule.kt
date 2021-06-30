@@ -3,7 +3,7 @@ package com.anoopvt.artbooktesting.di
 import android.content.Context
 import androidx.room.Room
 import com.anoopvt.artbooktesting.R
-import com.anoopvt.artbooktesting.api.RetrofitAPI
+import com.anoopvt.artbooktesting.api.*
 import com.anoopvt.artbooktesting.repo.ArtRepository
 import com.anoopvt.artbooktesting.repo.ArtRepositoryInterface
 import com.anoopvt.artbooktesting.roomdb.ArtDao
@@ -16,9 +16,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -36,8 +38,43 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun injectRetrofitAPI(): RetrofitAPI {
+    fun injectConnectivityInterceptor(@ApplicationContext context: Context) =
+        ConnectivityInterceptor(context)
+
+
+    @Singleton
+    @Provides
+    fun injectSharedPreferenceDelegate(@ApplicationContext context: Context) =
+        SharedPreferenceDelegate(context)
+
+
+    @Singleton
+    @Provides
+    fun injectHeaderInterceptor(sharedPreferenceDelegate:SharedPreferenceDelegate) = HeaderInterceptor(sharedPreferenceDelegate)
+
+
+    @Singleton
+    @Provides
+    fun injectCustomOkHttpClient(connectivityInterceptor: ConnectivityInterceptor,headerInterceptor:HeaderInterceptor,sharedPreferenceDelegate: SharedPreferenceDelegate) =
+        CustomOkHttpClient(
+            LoggingInterceptor(),
+            CustomHttpLoggingInterceptor(),
+            connectivityInterceptor,
+            headerInterceptor,
+            sharedPreferenceDelegate
+        )
+
+    @Singleton
+    @Provides
+    fun injectOkHttpClient(customOkHttpClient: CustomOkHttpClient): OkHttpClient {
+        return customOkHttpClient.getUserOkhttpClientWithHeader()
+    }
+
+    @Singleton
+    @Provides
+    fun injectRetrofitAPI(okHttpClient: OkHttpClient): RetrofitAPI {
         return Retrofit.Builder()
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
             .build()

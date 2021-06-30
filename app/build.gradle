@@ -114,4 +114,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
 
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
 }
