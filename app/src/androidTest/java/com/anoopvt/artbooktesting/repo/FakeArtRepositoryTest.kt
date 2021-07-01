@@ -6,7 +6,7 @@ import com.anoopvt.artbooktesting.model.ImageResponse
 import com.anoopvt.artbooktesting.roomdb.ArtModel
 import com.anoopvt.artbooktesting.util.Resource
 
-class FakeArtRepositoryTest :ArtRepositoryInterface {
+class FakeArtRepositoryTest : ArtRepositoryInterface {
 
     private val arts = mutableListOf<ArtModel>()
     private val artLiveData = MutableLiveData<List<ArtModel>>(arts)
@@ -26,10 +26,10 @@ class FakeArtRepositoryTest :ArtRepositoryInterface {
     }
 
     override suspend fun searchImage(imageString: String): Resource<ImageResponse> {
-        return Resource.success(ImageResponse(listOf(),0,0))
+        return Resource.success(ImageResponse(listOf(), 0, 0))
     }
 
-    private fun refreshData(){
+    private fun refreshData() {
         artLiveData.postValue(arts)
     }
 }

@@ -3,7 +3,6 @@ package com.anoopvt.artbooktesting.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.anoopvt.artbooktesting.MainCoroutineRule
 import com.anoopvt.artbooktesting.getOrAwaitValueTest
-import com.anoopvt.artbooktesting.repo.ArtRepository
 import com.anoopvt.artbooktesting.repo.FakeArtRepository
 import com.anoopvt.artbooktesting.util.Status
 import com.google.common.truth.Truth.assertThat
