@@ -12,7 +12,7 @@ interface ArtDao {
     @Delete
     suspend fun delete(art: ArtModel)
 
-    @Query("SELECT * FROm arts")
+    @Query("SELECT * FROM arts")
     fun observeArts(): LiveData<List<ArtModel>>
 
 }

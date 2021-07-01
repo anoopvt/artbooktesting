@@ -6,14 +6,18 @@ import com.anoopvt.artbooktesting.repo.ArtRepositoryInterface
 import com.anoopvt.artbooktesting.roomdb.ArtModel
 import com.anoopvt.artbooktesting.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class ArtViewModel @Inject constructor(
     private val repository: ArtRepositoryInterface,
     private val savedStateHandle: SavedStateHandle?
-) : ViewModel() , LifecycleObserver {
+) : ViewModel(), LifecycleObserver {
 
     //Art Fragment
     val artList = repository.getArt()
@@ -68,15 +72,19 @@ class ArtViewModel @Inject constructor(
         insertArtMsg.postValue(Resource.success(art))
     }
 
-    fun searchForImage(searchString: String) {
+    suspend fun searchForImage(searchString: String) {
         if (searchString.isEmpty()) {
             return
         }
-        images.value = Resource.loading(null)
-        viewModelScope.launch {
-            val response = repository.searchImage(searchString)
+        withContext(Main) {
+            images.value = Resource.loading(null)
+        }
+        val response = repository.searchImage(searchString)
+        withContext(Main) {
             images.value = response
         }
+
+
     }
 
 

@@ -18,6 +18,8 @@ import com.anoopvt.artbooktesting.databinding.FragmentImageApiBinding
 import com.anoopvt.artbooktesting.util.Status
 import com.anoopvt.artbooktesting.viewmodel.ArtViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,7 +43,7 @@ import javax.inject.Inject
 
         binding.searchText.addTextChangedListener {
             job?.cancel()
-            job = lifecycleScope.launch {
+            job = lifecycleScope.launch(IO) {
                 delay(1000)
                 it?.let {
                     if (it.toString().isNotEmpty()) {
