@@ -67,7 +67,7 @@ class ArtDetailsFragmentTest {
         }
 
         Espresso.pressBack()
-        Mockito.verify(navController).popBackStack()
+        Mockito.verify(navController).navigateUp()
 
     }
 

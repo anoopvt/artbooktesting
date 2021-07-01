@@ -2,7 +2,6 @@ package com.anoopvt.artbooktesting.api
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.anoopvt.artbooktesting.ArtBookApplication
 
 
 class SharedPreferenceDelegate constructor(val context: Context){

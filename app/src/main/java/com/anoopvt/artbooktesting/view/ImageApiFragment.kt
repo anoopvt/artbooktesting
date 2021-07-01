@@ -6,26 +6,20 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.anoopvt.artbooktesting.R
 import com.anoopvt.artbooktesting.adapter.ImageRecyclerAdapter
-import com.anoopvt.artbooktesting.databinding.FragmentArtDetailsBinding
 import com.anoopvt.artbooktesting.databinding.FragmentImageApiBinding
 import com.anoopvt.artbooktesting.util.Status
 import com.anoopvt.artbooktesting.viewmodel.ArtViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
- class ImageApiFragment  constructor(val imageRecyclerAdapter: ImageRecyclerAdapter) :
+class ImageApiFragment  constructor(val imageRecyclerAdapter: ImageRecyclerAdapter) :
     Fragment(R.layout.fragment_image_api) {
 
      val viewModel: ArtViewModel by activityViewModels()

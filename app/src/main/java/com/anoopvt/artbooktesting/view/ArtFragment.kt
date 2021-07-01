@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +14,7 @@ import com.anoopvt.artbooktesting.adapter.ArtRecyclerAdapter
 import com.anoopvt.artbooktesting.databinding.FragmentArtsBinding
 import com.anoopvt.artbooktesting.viewmodel.ArtViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+
 @AndroidEntryPoint
 class ArtFragment  constructor(
     val artRecyclerAdapter: ArtRecyclerAdapter
