@@ -1,7 +1,8 @@
 package com.anoopvt.artbooktesting
 
+import android.app.Application
 import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp(MultiDexApplication::class)
-class MyApplication : Hilt_MyApplication()
+@HiltAndroidApp()
+class MyApplication : Application()

@@ -4,8 +4,13 @@ import android.content.Context
 import androidx.room.Room
 import com.anoopvt.artbooktesting.R
 import com.anoopvt.artbooktesting.api.*
+import com.anoopvt.artbooktesting.data.UserPreferences
+import com.anoopvt.artbooktesting.data.UserRepository
+import com.anoopvt.artbooktesting.main.login.repo.LoginRepository
+import com.anoopvt.artbooktesting.main.login.repo.LoginRepositoryInterface
 import com.anoopvt.artbooktesting.repo.ArtRepository
 import com.anoopvt.artbooktesting.repo.ArtRepositoryInterface
+import com.anoopvt.artbooktesting.repo.UserRepositoryInterface
 import com.anoopvt.artbooktesting.roomdb.ArtDao
 import com.anoopvt.artbooktesting.roomdb.ArtDatabase
 import com.anoopvt.artbooktesting.util.Util.BASE_URL
@@ -14,7 +19,9 @@ import com.bumptech.glide.request.RequestOptions
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -50,12 +57,17 @@ internal object AppModule {
 
     @Singleton
     @Provides
-    fun injectHeaderInterceptor(sharedPreferenceDelegate:SharedPreferenceDelegate) = HeaderInterceptor(sharedPreferenceDelegate)
+    fun injectHeaderInterceptor(sharedPreferenceDelegate: SharedPreferenceDelegate) =
+        HeaderInterceptor(sharedPreferenceDelegate)
 
 
     @Singleton
     @Provides
-    fun injectCustomOkHttpClient(connectivityInterceptor: ConnectivityInterceptor,headerInterceptor:HeaderInterceptor,sharedPreferenceDelegate: SharedPreferenceDelegate) =
+    fun injectCustomOkHttpClient(
+        connectivityInterceptor: ConnectivityInterceptor,
+        headerInterceptor: HeaderInterceptor,
+        sharedPreferenceDelegate: SharedPreferenceDelegate
+    ) =
         CustomOkHttpClient(
             LoggingInterceptor(),
             CustomHttpLoggingInterceptor(),
@@ -94,5 +106,17 @@ internal object AppModule {
             RequestOptions().placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
         )
+
+
+
+    @Singleton
+    @Provides
+    fun injectUserPreferences(@ApplicationContext context: Context) =
+        UserPreferences(context)
+
+    @Singleton
+    @Provides
+    fun injectUserRepository(userPreferences: UserPreferences) =
+        UserRepository(userPreferences) as UserRepositoryInterface
 
 }

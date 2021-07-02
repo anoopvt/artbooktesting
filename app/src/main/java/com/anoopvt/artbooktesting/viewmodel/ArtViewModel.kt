@@ -1,10 +1,13 @@
 package com.anoopvt.artbooktesting.viewmodel
 
 import androidx.lifecycle.*
+import com.anoopvt.artbooktesting.data.UserRepository
 import com.anoopvt.artbooktesting.model.ImageResponse
+import com.anoopvt.artbooktesting.model.ImageResult
 import com.anoopvt.artbooktesting.repo.ArtRepositoryInterface
 import com.anoopvt.artbooktesting.roomdb.ArtModel
 import com.anoopvt.artbooktesting.util.Resource
+import com.anoopvt.artbooktesting.util.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
@@ -16,11 +19,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ArtViewModel @Inject constructor(
     private val repository: ArtRepositoryInterface,
+    private val userRepository: UserRepository,
     private val savedStateHandle: SavedStateHandle?
 ) : ViewModel(), LifecycleObserver {
 
+    private val _uiState = MutableLiveData(ActionCenterState())
+    val uiState: LiveData<ActionCenterState> = _uiState
+
     //Art Fragment
     val artList = repository.getArt()
+
+    val token = userRepository.getToken().asLiveData()
 
     // Image api fragment
 
@@ -77,15 +86,46 @@ class ArtViewModel @Inject constructor(
             return
         }
         withContext(Main) {
-            images.value = Resource.loading(null)
+            _uiState.value = ActionCenterState(loading = true)
         }
         val response = repository.searchImage(searchString)
-        withContext(Main) {
-            images.value = response
+
+        when (response.status) {
+            Status.SUCCESS -> {
+//                images.value = response
+                val urls = response.data?.hits?.map { imageResult ->
+                    imageResult.previewURL
+                } as ArrayList<String>
+
+                withContext(Main) {
+                    _uiState.value = ActionCenterState(mainList = urls)
+                }
+            }
+
+            Status.ERROR -> {
+                withContext(Main) {
+                    _uiState.value =
+                        ActionCenterState(error = true, errorMessage = response.message ?: "Error")
+                }
+            }
         }
 
 
     }
+
+    fun login(string: String) {
+        viewModelScope.launch { userRepository.saveToken(string) }
+
+    }
+
+
+    data class ActionCenterState(
+        val mainList: ArrayList<String> = arrayListOf(),
+        val loading: Boolean = false,
+        val error: Boolean = false,
+        val errorMessage: String = "",
+
+        )
 
 
 }

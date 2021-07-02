@@ -37,6 +37,10 @@ object TestAppModule {
 
     @Singleton
     @Provides
+    fun injectArtDao(database: ArtDatabase) = database.artDao()
+
+    @Singleton
+    @Provides
     fun injectNormalArtRepo() =
         FakeArtRepositoryTest() as ArtRepositoryInterface
 

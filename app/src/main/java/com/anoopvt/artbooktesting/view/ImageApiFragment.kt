@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.anoopvt.artbooktesting.R
 import com.anoopvt.artbooktesting.adapter.ImageRecyclerAdapter
 import com.anoopvt.artbooktesting.databinding.FragmentImageApiBinding
-import com.anoopvt.artbooktesting.util.Status
 import com.anoopvt.artbooktesting.viewmodel.ArtViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Job
@@ -60,29 +59,30 @@ class ImageApiFragment  constructor(val imageRecyclerAdapter: ImageRecyclerAdapt
     }
 
     private fun subscribeToObservers() {
-        viewModel.imageList.observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    val urls = it.data?.hits?.map { imageResult ->
-                        imageResult.previewURL
-                    }
-                    imageRecyclerAdapter.images = urls ?: listOf()
-                    fragmentBinding?.progressBar?.visibility = View.GONE
-
-                }
-                Status.ERROR -> {
-                    Toast.makeText(requireContext(), it.message ?: "Error", Toast.LENGTH_SHORT)
-                        .show()
-                    fragmentBinding?.progressBar?.visibility = View.GONE
-
-                }
-                Status.LOADING -> {
-                    fragmentBinding?.progressBar?.visibility = View.VISIBLE
-
-                }
-            }
+        viewModel.uiState.observe(viewLifecycleOwner,{
+            updateValuesToUi(it)
         })
     }
+
+    private fun updateValuesToUi(state: ArtViewModel.ActionCenterState) {
+
+        if (state.loading){
+            fragmentBinding?.progressBar?.visibility = View.VISIBLE
+       }
+        else{
+            fragmentBinding?.progressBar?.visibility = View.GONE
+        }
+
+        imageRecyclerAdapter.images = state.mainList
+
+        if (state.error){
+            Toast.makeText(requireContext(), state.errorMessage, Toast.LENGTH_SHORT)
+                .show()
+        }
+
+
+    }
+
 
     override fun onDestroy() {
         fragmentBinding = null

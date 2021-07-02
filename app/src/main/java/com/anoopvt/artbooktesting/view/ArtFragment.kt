@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,14 +15,17 @@ import com.anoopvt.artbooktesting.adapter.ArtRecyclerAdapter
 import com.anoopvt.artbooktesting.databinding.FragmentArtsBinding
 import com.anoopvt.artbooktesting.viewmodel.ArtViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ArtFragment  constructor(
+class ArtFragment constructor(
     val artRecyclerAdapter: ArtRecyclerAdapter
 ) : Fragment(R.layout.fragment_arts) {
 
-
     private var fragmentBinding: FragmentArtsBinding? = null
+
     val viewModel: ArtViewModel by activityViewModels()
 
 
@@ -47,6 +51,8 @@ class ArtFragment  constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         val binding = FragmentArtsBinding.bind(view)
         fragmentBinding = binding
 
@@ -59,6 +65,8 @@ class ArtFragment  constructor(
         binding.fab.setOnClickListener {
             findNavController().navigate(ArtFragmentDirections.actionArtFragmentToArtDetailsFragment())
         }
+
+
     }
 
     private fun subscribeToObservers() {
